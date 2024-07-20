@@ -1,0 +1,26 @@
+---
+
+- name: create users in rocky linux 9
+  hosts: web1
+  become: true
+  tasks:
+         
+  - name: prasad exists with UID 4000
+    user: 
+      name: "{{ item }}"
+      groups: "wheel"
+      state: present
+
+    with_items:
+         - prasad
+         - dulee
+         - ajith 
+         - rangana 
+         - dilshan 
+         - janagan
+         - sarin
+         - asiri
+         - malaka
+         - nishaka
+
+...

@@ -1,0 +1,41 @@
+---
+
+- name: create users in rocky linux 9
+  hosts: web1
+  become: true
+#  vault-pass: prasad
+
+  vars:
+    user_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37643531326564386161656433303665383839383230663931636366366465373437323764366330
+          3939636132343031373061396262646532613438643037620a643432376663616565303930313130
+          33376664363563376430323035653539393237366638646633643339383161396536323363376238
+          6533626162363062650a343231333531313163356532326466323634666634356263343936663739
+          6434
+
+
+  tasks:
+         
+  - name: Adding users in the list ...
+    user: 
+      name: "{{ item.name }}"
+      groups: "{{ item.groups }}"
+      uid: "{{ item.uid }}"
+      password: "{{ user_pass | string | password_hash('sha512') }}"
+      state: present
+
+    with_items:
+         - { name: 'prasad', groups: 'root', uid: 6000 }
+         - { name: 'dulee', groups: 'wheel', uid: 6001 }
+         - { name: 'ajith', groups: 'wheel', uid: 6002 } 
+         - { name: 'rangana', groups: 'wheel', uid: 6003 } 
+         - { name: 'dilshan', groups: 'wheel', uid: 6004 } 
+         - { name: 'janagan', groups: 'wheel', uid: 6005 }
+         - { name: 'sarin', groups: 'root', uid: 6006 }
+         - { name: 'asiri', groups: 'wheel', uid: 6007 }
+         - { name: 'malaka', groups: 'wheel', uid: 6008 }
+         - { name: 'nishaka', groups: 'wheel', uid: 6009 }
+    loop_control:
+      label: " Updating User {{ item.name }} belongs to Group {{ item.groups }} and UID= {{ item.uid }}" 
+...
